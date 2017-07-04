@@ -1,83 +1,92 @@
-import flightSearch from './flight-search';
+import * as moment from 'moment';
+import { flightSearch } from './flight-search';
 
-it('should exists', () => {
-    expect(flightSearch).toBeDefined();
-});
+describe('Flight Search API', () => { 
 
-it('should return array of available flights', async () => {
+    beforeEach(() => { 
 
-    const query: Jetabroad.SearchQuery = {
-        affiliateCode: 'TEST',
-        from: 'SYD',
-        to: 'BNE',
-        departDate: '2017-07-22',
-        returnDate: '2017-08-01',
-        adults: 1,
-        children: 0,
-        infants: 0,
-        cabinClass: 'Economy',
-        oneWayOrReturn: 'Return',
-        currencyCode: 'AUD',
-        attributeToAffiliate: 'something'
-    };
+        window.fetch = jest.fn().mockImplementation( async (request: Request) => { 
+            
+            const successResponse = new Response('[]', {
+                status: 200,
+                statusText: 'OK',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-    const journey: Jetabroad.Journey = {
-        price: {
-            includesTax: true,
+            const errorResponse = new Response('<div>Error</div>', {
+                status: 400,
+                statusText: 'Error',
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+
+            let query = await request.json();
+
+            let departDate = moment(query.departDate).startOf('day');
+            let returnDate = moment(query.returnDate).endOf('day');
+            let today = moment().startOf('day');
+
+            return Promise.resolve(
+                (departDate.diff(today) >= 0 && returnDate.diff(today) > 1) ? successResponse : errorResponse
+            );
+            
+        });
+
+    });
+
+    it('should exists', () => {
+
+        expect(flightSearch).toBeDefined();
+
+    });
+
+    it('should return array of available journeys given the dates are valid', async () => {
+
+        const mockQuery: Jetabroad.SearchQuery = {
+            affiliateCode: 'RCTF6B',
+            from: 'SYD',
+            to: 'BNE',
+            departDate: '2017-07-22',
+            returnDate: '2017-08-01',
+            adults: 1,
+            children: 0,
+            infants: 0,
+            cabinClass: 'Economy',
+            oneWayOrReturn: 'Return',
             currencyCode: 'AUD',
-            amount: 705.98,
-            pricePerAdult: 705.98,
-            pricePerPassenger: 705.98,
-            totalAmount: 945.82,
-            totalPricePerAdult: 945.82,
-            totalPricePerPassenger: 945.82,
-            name: 'Economy'
-        },
-        outboundLeg: {
-            segments: [
-                {
-                    flightClass: 'Economy',
-                    flightNumber: 'AK889',
-                    departPortCode: 'DMK',
-                    arrivePortCode: 'KUL',
-                    departDttm: '2017-07-22T20:20:00',
-                    arriveDttm: '2017-07-22T23:30:00'
-                },
-                {
-                    flightClass: 'Economy',
-                    flightNumber: 'D7220',
-                    departPortCode: 'KUL',
-                    arrivePortCode: 'SYD',
-                    departDttm: '2017-07-23T10:00:00',
-                    arriveDttm: '2017-07-23T20:10:00'
-                }
-            ]
-        },
-        inboundLeg: {
-            segments: [
-                {
-                    flightClass: 'Economy',
-                    flightNumber: 'D7223',
-                    departPortCode: 'SYD',
-                    arrivePortCode: 'KUL',
-                    departDttm: '2017-08-01T11:00:00',
-                    arriveDttm: '2017-08-01T17:35:00'
-                },
-                {
-                    flightClass: 'Economy',
-                    flightNumber: 'FD308',
-                    departPortCode: 'KUL',
-                    arrivePortCode: 'DMK',
-                    departDttm: '2017-08-01T20:05:00',
-                    arriveDttm: '2017-08-01T21:20:00'
-                }
-            ]
-        },
-        deeplinkURL: 'http://www.jetabroad.com.au/deeplink?d=5c0f92c3-e7c2-4085-b798-3781c3384871&r=%2fFlights%2fBKK-SYD-22-Jul-17%2fSYD-BKK-01-Aug-17%2f1Adult&utm_medium=api&utm_source=aff_RCTF6B'
-    };
+            attributeToAffiliate: 'something'
+        };
 
-    let result = await flightSearch(query);
+        flightSearch(mockQuery).then(async (data) => {
+            expect(await data.json()).toEqual([]);
+        });
 
-    expect(result[0]).toEqual(journey);
+    });
+
+    it('should return error given any of the dates are invalid', async () => {
+
+        const mockQuery: Jetabroad.SearchQuery = {
+            affiliateCode: 'RCTF6B',
+            from: 'SYD',
+            to: 'BNE',
+            departDate: '2016-07-22',
+            returnDate: '2017-08-01',
+            adults: 1,
+            children: 0,
+            infants: 0,
+            cabinClass: 'Economy',
+            oneWayOrReturn: 'Return',
+            currencyCode: 'AUD',
+            attributeToAffiliate: 'something'
+        };
+
+        flightSearch(mockQuery).then(async (data) => {
+            expect(await data.text()).toEqual('<div>Error</div>');
+        });
+
+    });
 
 });

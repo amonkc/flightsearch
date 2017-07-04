@@ -1,6 +1,6 @@
 declare namespace Jetabroad { 
 
-    export interface SearchQuery { 
+    interface SearchQuery { 
         affiliateCode: string;
         from: string;
         to: string;
@@ -15,7 +15,7 @@ declare namespace Jetabroad {
         attributeToAffiliate: string;
     }
 
-    export interface Price {
+    interface Price {
         includesTax: boolean;
         currencyCode: string;
         amount: number;
@@ -31,7 +31,7 @@ declare namespace Jetabroad {
         name: string;
     }
 
-    export interface Segment { 
+    interface Segment { 
         flightClass: string;
         flightNumber: string;
         departPortCode: string;
@@ -40,11 +40,11 @@ declare namespace Jetabroad {
         arriveDttm: string;
     }
 
-    export interface Leg { 
+    interface Leg { 
         segments: Segment[];
     }
 
-    export interface Journey { 
+    interface Journey { 
         price: Price;
         outboundLeg: Leg;
         inboundLeg?: Leg;

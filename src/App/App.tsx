@@ -1,19 +1,47 @@
 import * as React from 'react';
-import './App.css';
+import './app.css';
 
-const logo = require('../logo.svg');
+import * as FlightAPI from '../services/flight-search/flight-search';
+
+import SearchBox from '../components/search-box/search-box';
+import ResultList from '../components/result-list/result-list';
 
 class App extends React.Component<{}, {}> {
+
+  private journeys: Jetabroad.Journey[];
+
+  constructor() { 
+    super();
+
+    this.journeys = [];
+
+  }
+  
+  componentDidMount() { 
+    FlightAPI.flightSearch({
+        affiliateCode: 'RCTF6B',
+        from: 'SYD',
+        to: 'BNE',
+        departDate: '2017-07-22',
+        returnDate: '2017-08-01',
+        adults: 1,
+        children: 0,
+        infants: 0,
+        cabinClass: 'Economy',
+        oneWayOrReturn: 'Return',
+        currencyCode: 'AUD',
+        attributeToAffiliate: 'something'
+    }).then((data) => { 
+      console.log(data.status);
+    });
+  }
+  
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+      <div className="app">
+        <h1>Flight Search</h1>
+        <SearchBox />
+        <ResultList />
       </div>
     );
   }
