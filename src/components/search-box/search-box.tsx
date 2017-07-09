@@ -47,15 +47,8 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
 
     }
 
-    onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const target = e.target;
-        const value = target.value;
-        const name = target.name;
-
-        let partialState = {};
-        partialState[name] = value;
-
-        this.setState(partialState);
+    openSearchBox() {
+        this.flightSearchBox.open();
     }
 
     componentDidMount() {
@@ -106,6 +99,9 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
                 </div>
                 <div>
                     Passengers: {query.adults} Adult(s), {query.children} Children, {query.infants} Infant(s)
+                </div>
+                <div>
+                    <button onClick={(e) => this.openSearchBox()}><b>Edit search</b></button>
                 </div>
             </div>
         );
