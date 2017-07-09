@@ -1,9 +1,23 @@
 import * as React from 'react';
+import ResultItem from '../result-item/result-item';
 
-class ResultList extends React.Component<{}, {}> { 
+interface ResultListProps { 
+    journey: Jetabroad.Journey[];
+}
+
+class ResultList extends React.Component<ResultListProps, {}> { 
     render() { 
+        let resultItems = this.props.journey.map(
+            (journey, index) => <ResultItem key={index.toString()} journey={journey} />
+        );
+
         return (
-            <div>Result List</div>
+            <div>
+                {resultItems.length > 0 &&
+                    <p>Result List total of {this.props.journey.length} items</p>
+                }
+                {resultItems}
+            </div>
         );
     }
 }

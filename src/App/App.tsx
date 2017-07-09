@@ -1,38 +1,39 @@
+import * as $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 import * as React from 'react';
 import './app.css';
-
-import * as FlightAPI from '../services/flight-search/flight-search';
 
 import SearchBox from '../components/search-box/search-box';
 import ResultList from '../components/result-list/result-list';
 
-class App extends React.Component<{}, {}> {
+interface AppState { 
+  journey: Jetabroad.Journey[];
+  searching: boolean;
+}
 
-  private journeys: Jetabroad.Journey[];
+class App extends React.Component<{}, AppState> {
 
   constructor() { 
     super();
 
-    this.journeys = [];
+    this.state = {
+      journey: [],
+      searching: false
+    };
 
   }
-  
-  componentDidMount() { 
-    FlightAPI.flightSearch({
-        affiliateCode: 'RCTF6B',
-        from: 'SYD',
-        to: 'BNE',
-        departDate: '2017-07-22',
-        returnDate: '2017-08-01',
-        adults: 1,
-        children: 0,
-        infants: 0,
-        cabinClass: 'Economy',
-        oneWayOrReturn: 'Return',
-        currencyCode: 'AUD',
-        attributeToAffiliate: 'something'
-    }).then((data) => { 
-      console.log(data.status);
+
+  onSearching() { 
+    this.setState({
+      searching: true
+    });
+  }
+
+  onResult(journey: Jetabroad.Journey[]) { 
+    this.setState({
+      journey: journey,
+      searching: false
     });
   }
   
@@ -40,8 +41,16 @@ class App extends React.Component<{}, {}> {
     return (
       <div className="app">
         <h1>Flight Search</h1>
-        <SearchBox />
-        <ResultList />
+        <SearchBox
+          onSearching={() => this.onSearching()}  
+          onResult={(journey) => this.onResult(journey)}
+        />
+        {this.state.searching &&
+          <p>
+            Searching....
+          </p>
+        }
+        <ResultList journey={this.state.journey} />
       </div>
     );
   }

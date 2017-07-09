@@ -1,13 +1,14 @@
 import * as moment from 'moment';
 import { flightSearch } from './flight-search';
+import { mockResult } from './__mocks__/result';
 
 describe('Flight Search API', () => { 
 
-    beforeEach(() => { 
+    beforeAll(() => { 
 
         window.fetch = jest.fn().mockImplementation( async (request: Request) => { 
             
-            const successResponse = new Response('[]', {
+            const successResponse = new Response(JSON.stringify(mockResult), {
                 status: 200,
                 statusText: 'OK',
                 headers: {
@@ -46,7 +47,6 @@ describe('Flight Search API', () => {
     it('should return array of available journeys given the dates are valid', async () => {
 
         const mockQuery: Jetabroad.SearchQuery = {
-            affiliateCode: 'RCTF6B',
             from: 'SYD',
             to: 'BNE',
             departDate: '2017-07-22',
@@ -56,12 +56,11 @@ describe('Flight Search API', () => {
             infants: 0,
             cabinClass: 'Economy',
             oneWayOrReturn: 'Return',
-            currencyCode: 'AUD',
-            attributeToAffiliate: 'something'
+            currencyCode: 'AUD'
         };
 
         flightSearch(mockQuery).then(async (data) => {
-            expect(await data.json()).toEqual([]);
+            expect(await data.json()).toEqual(mockResult);
         });
 
     });
@@ -69,7 +68,6 @@ describe('Flight Search API', () => {
     it('should return error given any of the dates are invalid', async () => {
 
         const mockQuery: Jetabroad.SearchQuery = {
-            affiliateCode: 'RCTF6B',
             from: 'SYD',
             to: 'BNE',
             departDate: '2016-07-22',
@@ -79,8 +77,7 @@ describe('Flight Search API', () => {
             infants: 0,
             cabinClass: 'Economy',
             oneWayOrReturn: 'Return',
-            currencyCode: 'AUD',
-            attributeToAffiliate: 'something'
+            currencyCode: 'AUD'
         };
 
         flightSearch(mockQuery).then(async (data) => {

@@ -1,7 +1,6 @@
 declare namespace Jetabroad { 
 
     interface SearchQuery { 
-        affiliateCode: string;
         from: string;
         to: string;
         departDate: string;
@@ -12,7 +11,6 @@ declare namespace Jetabroad {
         cabinClass: string;
         oneWayOrReturn: 'OneWay' | 'Return';
         currencyCode: string;
-        attributeToAffiliate: string;
     }
 
     interface Price {
@@ -51,4 +49,9 @@ declare namespace Jetabroad {
         deeplinkURL: string;
     }
 
+}
+
+interface Window { 
+    jQuery: JQueryStatic;
+    $: JQueryStatic;
 }

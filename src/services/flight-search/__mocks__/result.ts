@@ -1,4 +1,4 @@
-const mockJourney: Jetabroad.Journey = {
+export const mockResult: Jetabroad.Journey[] = [{
     price: {
         includesTax: true,
         currencyCode: 'AUD',
@@ -51,10 +51,4 @@ const mockJourney: Jetabroad.Journey = {
         ]
     },
     deeplinkURL: 'http://www.jetabroad.com.au/deeplink?d=5c0f92c3-e7c2-4085-b798-3781c3384871&r=%2fFlights%2fBKK-SYD-22-Jul-17%2fSYD-BKK-01-Aug-17%2f1Adult&utm_medium=api&utm_source=aff_RCTF6B'
-};
-
-export default function fetch(url: string) { 
-    return new Promise((resolve, reject) => { 
-        resolve([mockJourney]);
-    });
-}
+}];

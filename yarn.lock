@@ -13,6 +13,10 @@
   version "20.0.2"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-20.0.2.tgz#86c751121fb53dbd39bb1a08c45083da13f2dc67"
 
+"@types/jquery@^3.2.6":
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.2.6.tgz#9890ec300a1521d282ded775d2759f82df88d7cc"
+
 "@types/node@^8.0.7":
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.7.tgz#fb0ad04b5b6f6eabe0372a32a8f1fbba5c130cae"
@@ -2654,6 +2658,21 @@ jest@20.0.3:
   resolved "https://registry.yarnpkg.com/jest/-/jest-20.0.3.tgz#e4fd054c4f1170a116a00761da4cfdb73f1cdc33"
   dependencies:
     jest-cli "^20.0.3"
+
+"jquery-flight-search@https://github.com/amonkc/jquery-flight-search.git":
+  version "0.3.0"
+  resolved "https://github.com/amonkc/jquery-flight-search.git#9dfa1786abad86a09302d02110ad4bf90f926509"
+  dependencies:
+    jquery "^3.2.1"
+    jquery-ui "^1.12.1"
+
+jquery-ui@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+
+jquery@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
 js-base64@^2.1.9:
   version "2.1.9"
