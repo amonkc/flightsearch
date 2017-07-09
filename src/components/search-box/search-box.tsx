@@ -56,6 +56,7 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
             {
                 onSearch: (query: Jetabroad.SearchQuery) => {
 
+                    this.props.onResult([]);                    
                     this.props.onSearching();
 
                     this.setState(query);
