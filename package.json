@@ -9,7 +9,7 @@
     "@types/react": "^15.0.34",
     "@types/react-dom": "^15.5.1",
     "jquery-flight-search": "https://github.com/amonkc/jquery-flight-search.git",
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
